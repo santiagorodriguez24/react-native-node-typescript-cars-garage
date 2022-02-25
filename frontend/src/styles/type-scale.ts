@@ -1,4 +1,4 @@
-import { ScreenDimensions } from "hooks/useScreenDimensions";
+import { ScreenDimensions } from 'hooks/useScreenDimensions';
 
 import Fonts from './fonts';
 

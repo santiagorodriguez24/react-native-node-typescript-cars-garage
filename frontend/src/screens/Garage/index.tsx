@@ -1,40 +1,40 @@
-import React, { useEffect, useMemo, useCallback } from "react";
-import { Text, View, FlatList } from "react-native";
+import React, { useEffect, useMemo, useCallback } from 'react';
+import { View, FlatList } from 'react-native';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 
-import Heading from "components/StyledText/Heading";
-import CarCard from "components/CarCard";
+import Heading from 'components/StyledText/Heading';
+import CarCard from 'components/CarCard';
 
 import { CarEntity } from 'store/reducers/CarsReducer';
 import locales from 'constants/locales/cars';
 
 import routeNames from 'navigation/routeNames';
 
-import {
-  getCars
-} from 'store/actions-creators/CarsActions';
+import { getCars } from 'store/actions-creators/CarsActions';
 
-import { styles } from "./styles";
+import { styles } from './styles';
 
 const Garage = ({ navigation }: any) => {
   const dispatch = useDispatch();
 
-  const carsFromStore = useSelector<RootStateOrAny>((store) => store.cars.cars) as CarEntity[];
+  const carsFromStore = useSelector<RootStateOrAny>(
+    (store) => store.cars.cars,
+  ) as CarEntity[];
 
   useEffect(() => {
-    dispatch(getCars())
+    dispatch(getCars());
   }, [dispatch]);
 
   const navigateToDetails = useCallback(
     (id: string): void => {
       navigation.navigate(routeNames.CarDetail, { id });
     },
-    [],
+    [navigation],
   );
 
   const renderItem = useCallback(
     ({ item }: { item: CarEntity }): JSX.Element => {
-      const { id, image, model, make, year } = item;
+      const { id, image, model, make, year, isFavorite = false } = item;
 
       return (
         <CarCard
@@ -44,7 +44,7 @@ const Garage = ({ navigation }: any) => {
           model={model}
           make={make}
           year={year}
-          isFavorite={true}
+          isFavorite={isFavorite}
           onPress={() => navigateToDetails(id)}
         />
       );
@@ -64,21 +64,14 @@ const Garage = ({ navigation }: any) => {
       );
     }
     return null;
-  }, [
-    carsFromStore
-  ]);
+  }, [carsFromStore]);
 
   return (
     <View style={styles.container}>
-      <Heading
-        styleLevel="2"
-        style={styles.title}
-      >
+      <Heading styleLevel="2" style={styles.title}>
         {locales.garageTitle}
       </Heading>
-      <View style={styles.list}>
-        {carList}
-      </View>
+      <View style={styles.list}>{carList}</View>
     </View>
   );
 };

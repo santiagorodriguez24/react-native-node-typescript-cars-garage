@@ -1,11 +1,12 @@
-import { StyleSheet } from "react-native";
-import { ScreenDimensions } from "hooks/useScreenDimensions";
+import { StatusBar, StyleSheet } from 'react-native';
 
-import { Colors, Layouts, Spacing } from "styles";
+import { ScreenDimensions } from 'hooks/useScreenDimensions';
+import Platform from 'constants/platform';
+import { Colors, Layouts, Spacing } from 'styles';
 
 export const styles = StyleSheet.create({
   carImage: {
-    width: "100%",
+    width: '100%',
     height: ScreenDimensions.width * 0.5,
     marginVertical: Spacing.size20,
   },
@@ -15,7 +16,16 @@ export const styles = StyleSheet.create({
   },
   container: {
     ...Layouts.container,
-    padding: Spacing.size20,
+    backgroundColor: Colors.Generic.white,
+  },
+  contentContainer: {
+    paddingHorizontal: Spacing.size20,
+    paddingBottom: Spacing.size40,
+    paddingTop: Platform.isAndroid ? StatusBar.currentHeight : Spacing.size0,
+  },
+  starContainer: {
+    ...Layouts.centered,
+    marginBottom: Spacing.size20,
   },
   title: {
     color: Colors.Text.black,

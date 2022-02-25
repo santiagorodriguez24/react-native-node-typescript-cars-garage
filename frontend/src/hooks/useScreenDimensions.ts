@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Dimensions } from 'react-native'
+import { useState, useEffect } from 'react';
+import { Dimensions } from 'react-native';
 
 /*
 For iPhone X/XR/XS etc. (notch) handling, we have the library - react-native-iphone-x-helper
@@ -14,20 +14,19 @@ export const ScreenDimensions = {
   width: Math.round(Dimensions.get('window').width),
 };
 
-
 export const useScreenDimensions = () => {
-  const [size, setSize] = useState(Dimensions.get('window'))
+  const [size, setSize] = useState(Dimensions.get('window'));
 
   useEffect(() => {
     const onChange = (result: any) => {
-      setSize(result.window)
-    }
-    Dimensions.addEventListener('change', onChange)
-    return () => Dimensions.removeEventListener('change', onChange)
-  })
+      setSize(result.window);
+    };
+    Dimensions.addEventListener('change', onChange);
+    return () => Dimensions.removeEventListener('change', onChange);
+  });
 
   return {
     ...size,
-    isLandscape: size.width > size.height
-  }
-}
+    isLandscape: size.width > size.height,
+  };
+};

@@ -1,6 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-import { Colors, Layouts, Spacing } from "styles";
+import { Colors, Layouts, Spacing } from 'styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -8,7 +8,8 @@ export const styles = StyleSheet.create({
     padding: Spacing.size15,
   },
   listContainerStyle: {
-    marginVertical: Spacing.size45,
+    marginTop: Spacing.size45,
+    paddingBottom: Spacing.size45,
   },
   list: {
     ...Layouts.container,

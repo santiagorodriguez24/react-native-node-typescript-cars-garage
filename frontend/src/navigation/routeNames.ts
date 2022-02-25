@@ -1,6 +1,6 @@
 const routes = {
-    Garage: 'Garage',
-    CarDetail: 'CarDetail',
+  Garage: 'Garage',
+  CarDetail: 'CarDetail',
 };
 
 export default routes;

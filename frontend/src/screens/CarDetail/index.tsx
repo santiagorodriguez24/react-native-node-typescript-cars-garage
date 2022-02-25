@@ -1,66 +1,83 @@
-import React, { useEffect, useMemo, useCallback } from "react";
-import { View, Image, ImageSourcePropType, } from "react-native";
+import React, { useMemo, useCallback } from 'react';
+import { View, Image, ScrollView } from 'react-native';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import Heading from "components/StyledText/Heading";
+import Heading from 'components/StyledText/Heading';
 import Body from 'components/StyledText/Body';
-import CarCard from "components/CarCard";
 
 import { CarEntity } from 'store/reducers/CarsReducer';
 import locales from 'constants/locales/cars';
 
 import {
-  getCars
+  addFavoriteCar,
+  removeFavoriteCar,
 } from 'store/actions-creators/CarsActions';
 
-import { styles } from "./styles";
+import { styles } from './styles';
+import FavoriteStar from 'components/FavoriteStar';
 
-import { useScreenDimensions } from "hooks/useScreenDimensions";
-import FavoriteStar from "components/FavoriteStar";
-
-const CarDetail = ({ route, navigation }: any) => {
+const CarDetail = ({ route }: any): JSX.Element => {
   const { id } = route.params;
-  const carsFromStore = useSelector<RootStateOrAny>((store) => store.cars.cars) as CarEntity[];
-  const size = useScreenDimensions();
+  const carsFromStore = useSelector<RootStateOrAny>(
+    (store) => store.cars.cars,
+  ) as CarEntity[];
 
-  const car = useMemo(() => {
-    const carToRender = carsFromStore.find(element => element.id = id);
+  const dispatch = useDispatch();
+
+  const toggleFavorite = useCallback(
+    (carId: string, isFavorite: boolean): void => {
+      if (isFavorite) {
+        dispatch(removeFavoriteCar(carId));
+      } else {
+        dispatch(addFavoriteCar(carId));
+      }
+    },
+    [dispatch],
+  );
+
+  const carDetails = useMemo(() => {
+    const carToRender = carsFromStore.find((element: any) => element.id === id);
 
     if (carToRender) {
-      const { model, image, year, make } = carToRender;
+      const {
+        model,
+        image,
+        year,
+        make,
+        isFavorite = false,
+      } = carToRender as CarEntity;
 
       return (
         <>
-          <Heading
-            styleLevel="2"
-            style={styles.title}
-          >
+          <Heading styleLevel="2" style={styles.title}>
             {`${make} - ${model}`}
           </Heading>
           <Body styleType="large" style={styles.title}>
             {year}
           </Body>
-          <Image
-            source={image}
-            style={styles.carImage}
-          />
-          <Body styleType="default">
-            {locales.carDescriptionExample}
-          </Body>
+          <Image source={image} style={styles.carImage} />
+          <View style={styles.starContainer}>
+            <FavoriteStar
+              isFavorite={isFavorite}
+              onPress={() => toggleFavorite(id, isFavorite)}
+            />
+          </View>
+          <Body styleType="default">{locales.carDescriptionExample}</Body>
         </>
       );
     }
 
     return null;
-  }, [
-    carsFromStore
-  ]);
+  }, [carsFromStore, id, route]);
 
   return (
-    <View style={styles.container}>
-      {car}
-    </View>
+    <ScrollView
+      automaticallyAdjustContentInsets
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+    >
+      {carDetails}
+    </ScrollView>
   );
 };
 

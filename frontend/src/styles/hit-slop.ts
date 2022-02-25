@@ -1,8 +1,8 @@
 const hitSlop = {
-  bottom: 10,
-  left: 10,
-  right: 10,
-  top: 10,
+  bottom: 15,
+  left: 15,
+  right: 15,
+  top: 15,
 };
 
 export default hitSlop;
